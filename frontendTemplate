@@ -1,0 +1,119 @@
+{{ define "all" }}
+{
+    "log": {
+        "access": "/tmp/v2relay-frontend.log",
+        "error": "/tmp/v2relay-frontend.log",
+        "loglevel": "info"
+    },
+    "inbounds": [
+        {{- range $idx,$ele :=.Shadowsocks}}
+        {{- if $idx}}, {{- end}}
+        {
+            "tag":"{{$ele.Tag}}",
+            "protocol": "shadowsocks",
+            "port": {{$ele.Port}},
+            "settings": {
+                "method": "{{$ele.Cipher}}",
+                "password": "{{$ele.Password}}",
+                "udp": {{$ele.UDP}},
+                "level": 0,
+                "ota": false
+            }
+        }
+        {{- end}}
+        {{- range $idx,$ele :=.Vmess }}
+            ,{
+                "tag": "{{$ele.Tag}}",
+                "port": {{$ele.Port}},
+                "protocol": "vmess",
+                "settings": {
+                    "clients": [
+                        {
+                            "id": "{{$ele.UUID}}",
+                            "alterId": {{$ele.AlterID}}
+                        }
+                    ]
+                },
+                "streamSettings": {
+                    "network": "{{$ele.Network}}"
+                }
+            }
+        {{- end}}
+        {{- range $idx,$ele :=.Http}}
+            ,{
+                "tag": "{{$ele.Tag}}",
+                "protocol": "http",
+                "port": {{$ele.Port}},
+                "settings": {
+                    {{- if $ele.Username }}
+                        "accounts": [
+                            {
+                                "user": "{{$ele.Username}}",
+                                "pass": "{{$ele.Password}}"
+                            }
+                        ],
+                    {{- end}}
+                    "timeout": 0,
+                    "userLevel": 0,
+                    "allowTransparent": false
+                },
+                "sniffing": {
+                    "enabled": true,
+                    "destOverride": [
+                        "http",
+                        "tls"
+                    ]
+                }
+            }
+        {{- end}}
+   
+        {{- range $idx,$ele :=.Socks5}}
+            ,{
+                "tag":"{{$ele.Tag}}",
+                "protocol": "socks",
+                "port": {{$ele.Port}},
+                "settings": {
+                    "udp": {{$ele.UDP}},
+                    "auth": "{{$ele.Auth}}",
+                    {{- if $ele.Username}}
+                    "accounts": [
+                        {
+                            "user": "{{$ele.Username}}",
+                            "pass": "{{$ele.Password}}"
+                        }
+                    ],
+                    {{- end}}
+                    "userLevel": 0,
+                    "ip": "0.0.0.0"
+                },
+                "sniffing": {
+                    "enabled": true,
+                    "destOverride": [
+                        "http",
+                        "tls"
+                    ]
+                }
+            }
+        {{- end}}
+    ],
+    "outbound": {
+        "protocol": "socks",
+        "settings": {
+            "servers": [
+                {
+                    "address": "localhost",
+                    // BEGIN virtual port
+                    "port": 7891
+                    // END virtual port
+                }
+            ]
+        },
+        "streamSettings": {
+            "sockopt": {
+                // for transparent proxy
+                "mark": 255
+            }
+        }
+    }
+}
+{{ end }}

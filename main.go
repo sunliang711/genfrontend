@@ -28,6 +28,7 @@ type Vmess struct {
 	Tag     string
 	Server  string
 	Port    string
+	Cipher  string
 	UUID    string
 	AlterID string
 	Network string

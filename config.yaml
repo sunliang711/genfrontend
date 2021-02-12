@@ -94,6 +94,7 @@ inbounds:
     - user: eagle
       tag: "vmess:4010:eagle"
       server: 10.1.2.245
+      cipher: auto
       uuid: e2791dbb-f350-4a71-998a-da3b184a1cef
       alterId: 64
       network: ws

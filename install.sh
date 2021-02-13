@@ -151,6 +151,8 @@ install(){
     fi
 
     (cd ${downloadDir} && _run "tar -C $dest -xvf ${tarFile}" && echo "${GREEN}Install successfully${NORMAL}" || { echo "${RED}Install failed!${NORMAL}"; exit 1; })
+    # rename
+    (cd $dest && mv ${dirName} genfrontend)
 
 }
 

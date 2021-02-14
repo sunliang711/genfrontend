@@ -128,6 +128,18 @@ inbounds:
       password: usernopass2
       sub: true
 
+  # special outbound
+  outbound:
+      # protocol: socks or http
+      protocol: socks
+      server: localhost
+      port: 7891
+      # auth: noauth or password
+      auth: noauth
+      username: xx
+      password: yy
+
+
 mysql:
   enable: false
   dsn: <user>[:password]@tcp(localhost)/

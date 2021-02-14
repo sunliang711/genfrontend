@@ -97,14 +97,20 @@
         {{- end}}
     ],
     "outbound": {
-        "protocol": "socks",
+        "protocol": "{{.Outbound.Protocol}}",
         "settings": {
             "servers": [
                 {
-                    "address": "localhost",
-                    // BEGIN virtual port
-                    "port": 7891
-                    // END virtual port
+                    "address": "{{.Outbound.Server}}",
+                    "port": {{.Outbound.Port}}
+                    {{- if eq .Outbound.Auth "password" }}
+                    ,"users":[
+                        {
+                            "user":"{{.Outbound.Username}}",
+                            "pass":"{{.Outbound.Password}}"
+                        }
+                    ]
+                    {{- end}}
                 }
             ]
         },

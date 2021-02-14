@@ -57,11 +57,20 @@ type Http struct {
 	Sub      bool
 }
 
+type Outbound struct {
+	Protocol string
+	Server   string
+	Port     string
+	Auth     string
+	Username string
+	Password string
+}
 type Inbounds struct {
 	Vmess       []Vmess
 	Shadowsocks []Shadowsocks
 	Http        []Http
 	Socks5      []Socks5
+	Outbound    Outbound
 }
 
 func main() {

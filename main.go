@@ -58,13 +58,27 @@ type Http struct {
 }
 
 type Outbound struct {
+	// socks or http fields
 	Protocol string
 	Server   string
 	Port     string
 	Auth     string
 	Username string
 	Password string
+
+	// vless fields
+	UUID       string
+	Flow       string
+	Encryption string
+	Level      string
+	Network    string
+	Security   string
+
+	// file protocol
+	// protocol为file时，File字段表示文件名，此时先读取该文件，然后把文件内容替换到File字段里，用来填充模板
+	File string
 }
+
 type Inbounds struct {
 	Vmess       []Vmess
 	Shadowsocks []Shadowsocks
@@ -110,6 +124,9 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("Decode inbounds error: %v", err)
 	}
+	// port信息放在tag中（net traffic会使用tag中的port来监控流量），config文件中没有单独的port信息
+	// 因此需要把tag中的port信息提取出来，放到结构体的Port字段内
+
 	// Port
 	for i := range inbounds.Http {
 		fields := strings.Split(inbounds.Http[i].Tag, ":")
@@ -140,6 +157,14 @@ func main() {
 		inbounds.Socks5[i].Port = fields[1]
 	}
 	logrus.Debugf("inbounds: %+v", inbounds)
+
+	if inbounds.Outbound.Protocol == "file" {
+		bs, err := ioutil.ReadFile(inbounds.Outbound.File)
+		if err != nil {
+			logrus.Fatalf("read file: %v error", inbounds.Outbound.File)
+		}
+		inbounds.Outbound.File = string(bs)
+	}
 
 	var b bytes.Buffer
 	tmpl.ExecuteTemplate(&b, "all", &inbounds)

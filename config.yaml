@@ -1,16 +1,16 @@
-server:
-  port: 3003
-  template: config.template
+# user: clashsub时传递的url参数,区分不同的订阅者
+# tag: frontend中使用的tag，用作traffic monitor
+# 格式为 type:port:remark
+# clashsub中也使用tag，作为返回的proxy的user
+# server clashsub中使用，作为服务器地址
+# sub: clashsub订阅时只返回为true的元素
 
-
-      # user: clashsub时传递的url参数,区分不同的订阅者
-      # tag: frontend中使用的tag，用作traffic monitor
-      # 格式为 type:port:remark
-      # clashsub中也使用tag，作为返回的proxy的user
-      # sub: clashsub订阅时只返回为true的元素
+# user: clashsub
+# tag: clashsub frontend
+# server: clashsub
+# sub: clashsub
 inbounds:
   shadowsocks:
-    # begin server 1
     - user: nicof
       tag: "ss:4000:nicof"
       server: 10.1.2.245
@@ -18,81 +18,6 @@ inbounds:
       password: 90Ad!23
       udp: true
       sub: true
-
-    - user: nico
-      tag: "ss:4001:nico"
-      server: 10.1.2.245
-      cipher: aes-256-cfb
-      password: 301b
-      udp: true
-      sub: true
-
-    - user: chuan
-      tag: "ss:4002:chuan"
-      server: 10.1.2.245
-      cipher: aes-256-cfb
-      password: 3e1b
-      udp: true
-      sub: true
-
-    - user: eagle
-      tag: "ss:4003:eagle"
-      server: 10.1.2.245
-      cipher: aes-256-cfb
-      password: 3e1b
-      udp: true
-      sub: true
-
-    - user: wei
-      tag: "ss:4004:wei"
-      server: 10.1.2.245
-      cipher: aes-256-cfb
-      password: 3e1b
-      udp: true
-      sub: true
-    # end server 1
-
-    # begin server 2
-    - user: nicof
-      tag: "ss:4100:nicof"
-      server: 10.1.2.245
-      cipher: aes-256-cfb
-      password: 90A!23
-      udp: true
-      sub: true
-
-    - user: nico
-      tag: "ss:4101:nico"
-      server: 10.1.2.245
-      cipher: aes-256-cfb
-      password: 30s1b
-      udp: true
-      sub: true
-
-    - user: chuan
-      tag: "ss:4102:chuan"
-      server: 10.1.2.245
-      cipher: aes-256-cfb
-      password: o0s1b
-      udp: true
-      sub: true
-  
-    - user: eagle
-      tag: "ss:4103:eagle"
-      server: 10.1.2.245
-      cipher: aes-256-cfb
-      password: o0sab
-      udp: true
-      sub: true
-
-    - user: wei
-      tag: "ss:4104:wei"
-      server: 10.1.2.245
-      cipher: aes-256-cfb
-      password: o0s3b
-      udp: true
-      sub: true
-    # end server 2
 
   vmess:
     # begin server 1
@@ -104,90 +29,6 @@ inbounds:
       alterId: 64
       network: ws
       sub: true
-
-    - user: nico
-      tag: "vmess:4011:nico"
-      server: 10.1.2.245
-      cipher: auto
-      uuid: e2791dbb-f350-4a72-998a-da3b184a1cef
-      alterId: 64
-      network: ws
-      sub: true
-
-    - user: chuan
-      tag: "vmess:4012:chuan"
-      server: 10.1.2.245
-      cipher: auto
-      uuid: e2791dbb-f350-4a73-998a-da3b184a1cef
-      alterId: 64
-      network: ws
-      sub: true
-
-    - user: wei
-      tag: "vmess:4013:wei"
-      server: 10.1.2.245
-      cipher: auto
-      uuid: e2791dbb-f350-4a74-998a-da3b184a1cef
-      alterId: 64
-      network: ws
-      sub: true
-
-    - user: eagle
-      tag: "vmess:4014:eagle"
-      server: 10.1.2.245
-      cipher: auto
-      uuid: e2791dbb-f350-4a75-998a-da3b184a1cef
-      alterId: 64
-      network: ws
-      sub: true
-    # end server 1
-
-    # begin server 2
-    - user: nicof
-      tag: "vmess:4110:nicof"
-      server: 10.1.2.245
-      cipher: auto
-      uuid: e2791dbb-f350-4a71-998a-da3b184a1cef
-      alterId: 64
-      network: ws
-      sub: true
-
-    - user: nico
-      tag: "vmess:4111:nico"
-      server: 10.1.2.245
-      cipher: auto
-      uuid: e2791dbb-f350-4a72-998a-da3b184a1cef
-      alterId: 64
-      network: ws
-      sub: true
-
-    - user: chuan
-      tag: "vmess:4112:chuan"
-      server: 10.1.2.245
-      cipher: auto
-      uuid: e2791dbb-f350-4a73-998a-da3b184a1cef
-      alterId: 64
-      network: ws
-      sub: true
-
-    - user: wei
-      tag: "vmess:4113:wei"
-      server: 10.1.2.245
-      cipher: auto
-      uuid: e2791dbb-f350-4a74-998a-da3b184a1cef
-      alterId: 64
-      network: ws
-      sub: true
-
-    - user: eagle
-      tag: "vmess:4113:eagle"
-      server: 10.1.2.245
-      cipher: auto
-      uuid: e2791dbb-f350-4a75-998a-da3b184a1cef
-      alterId: 64
-      network: ws
-      sub: true
-    # end server 2
 
   socks5:
     # begin server 1
@@ -207,23 +48,6 @@ inbounds:
       sub: true
     # end server 1
 
-    # begin server 2
-    - user: eagle
-      tag: "socks5:4120:noauth"
-      server: 10.1.2.245
-      udp: true
-      auth: noauth
-      sub: true
-    - user: eagle
-      tag: "socks5:4121:auth"
-      server: 10.1.2.245
-      udp: true
-      auth: password
-      username: usersocks5
-      password: usernopasssocks5
-      sub: true
-    # end server 2
-
   http:
     # begin server 1
     - user: eagle
@@ -238,48 +62,28 @@ inbounds:
       sub: true
     # end server 1
 
-    # begin server 2
-    - user: eagle
-      tag: "http:4130:noauth"
-      server: 10.1.2.245
-      sub: true
-    - user: eagle
-      tag: "http:4131:auth"
-      server: 10.1.2.245
-      username: user2
-      password: usernopass2
-      sub: true
-    # end server 2
-
   # special outbound
   outbound:
-      # protocol: socks or http
-      protocol: socks
-      server: localhost
-      port: 7891
-      # auth: noauth or password
-      auth: noauth
-      username: xx
-      password: yy
+    # # protocol: socks or http
+    # protocol: socks
+    # server: localhost
+    # port: 7891
+    # # auth: noauth or password
+    # auth: noauth
+    # username: xx
+    # password: yy
 
+    # # protocol: vless
+    # protocol: vless
+    # server: trust.xyz
+    # port: 443
+    # uuid: 872b6a5f-d059-4410-b6e4-caef5530aa7b
+    # flow: xtls-rprx-direct
+    # encryption: none
+    # level: 0
+    # network: tcp
+    # security: xtls
 
-mysql:
-  enable: false
-  dsn: <user>[:password]@tcp(localhost)/
-  maxIdleConns: 0
-  maxOpenConns: 50
-mongodb:
-  enable: false
-  url: mongodb://localhost:27017
-
-log:
-  level: debug
-  logfile: ''
-  showFullTime: true
-  reportCaller: false
-
-cors:
-  allowOrigins: ['*']
-  allowMethods: [ 'GET', 'POST']
-  allowHeaders: ['Origin', 'Content-Length', 'Content-Type']
-  maxAge: 43200
+    # # protocol: file
+    protocol: file
+    file: vless

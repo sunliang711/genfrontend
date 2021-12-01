@@ -97,6 +97,8 @@
         {{- end}}
     ],
     "outbound": {
+        {{- if or (eq .Outbound.Protocol "socks") (eq .Outbound.Protocol "http") }}
+
         "protocol": "{{.Outbound.Protocol}}",
         "settings": {
             "servers": [
@@ -120,6 +122,36 @@
                 "mark": 255
             }
         }
+
+        {{- else if eq .Outbound.Protocol "vless" }}
+        "protocol": "{{.Outbound.Protocol}}",
+        "settings":{
+            "vnext":[
+                {
+                    "address":"{{.Outbound.Server}}",
+                    "port": {{.Outbound.Port}},
+                    "users": [
+                        {
+                            "id": "{{.Outbound.UUID}}",
+                            "flow": "{{.Outbound.Flow}}",
+                            "encryption": "{{.Outbound.Encryption}}",
+                            "level": {{.Outbound.Level}}
+                        }
+                    ]
+                }
+            ]
+        },
+        "streamSettings":{
+            "network": "{{.Outbound.Network}}",
+            "security": "{{.Outbound.Security}}",
+            "xtlsSettings":{
+                "serverName": "{{.Outbound.Server}}"
+            }
+        }
+        {{- else if eq .Outbound.Protocol "file" }}
+        {{.Outbound.File}}
+
+        {{- end}}
     }
 }
 {{ end }}

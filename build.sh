@@ -145,6 +145,7 @@ _build(){
 
 build(){
     _build darwin amd64
+    _build darwin arm64
     _build linux amd64
     _build linux arm64
 }
@@ -161,6 +162,7 @@ _pack(){
 
 pack(){
     _pack darwin amd64
+    _pack darwin arm64
     _pack linux amd64
     _pack linux arm64
 }

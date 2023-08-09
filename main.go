@@ -79,12 +79,19 @@ type Outbound struct {
 	File string
 }
 
+type Config struct {
+	Loglevel string
+	Logfile  string
+}
+
 type Inbounds struct {
 	Vmess       []Vmess
 	Shadowsocks []Shadowsocks
 	Http        []Http
 	Socks5      []Socks5
 	Outbound    Outbound
+
+	Config
 }
 
 func main() {
@@ -127,7 +134,7 @@ func main() {
 	// port信息放在tag中（net traffic会使用tag中的port来监控流量），config文件中没有单独的port信息
 	// 因此需要把tag中的port信息提取出来，放到结构体的Port字段内
 
-	// Port
+	// 把tag中的端口号解析出来放到port字段
 	for i := range inbounds.Http {
 		fields := strings.Split(inbounds.Http[i].Tag, ":")
 		if len(fields) < 3 {
@@ -175,6 +182,6 @@ func main() {
 			logrus.Fatalf("Write output file error: %v", err)
 		}
 	} else {
-		fmt.Printf(b.String())
+		fmt.Print(b.String())
 	}
 }

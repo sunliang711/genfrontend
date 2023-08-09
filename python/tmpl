@@ -2,7 +2,7 @@
     "log": {
         "access": "{{logfile}}",
         "error": "{{logfile}}",
-        "loglevel": "info"
+        "loglevel": "{{loglevel}}"
     },
     "inbounds": [
         {%- for s in shadowsocks -%}
@@ -99,7 +99,7 @@
         {%- endfor -%}
     ],
     "outbound": {
-        {%- if (outbound.protocol=="socks5" or outbound.protocol=="http") -%}
+        {%- if (outbound.protocol=="socks" or outbound.protocol=="http") -%}
         "protocol": "{{outbound.protocol}}",
         "settings": {
             "servers": [
@@ -119,7 +119,7 @@
         },
         "streamSettings": {
             "sockopt": {
-                // for transparent proxy
+                "note":"for transparent proxy",
                 "mark": 255
             }
         }

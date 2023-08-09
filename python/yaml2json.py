@@ -7,6 +7,9 @@ import yaml
 from jinja2 import Environment,  FileSystemLoader
 import json
 
+# pip3 install pyyaml
+# pip3 install jinja2
+
 
 def setup_log(logfile, log_level):
     LOG_LEVEL = {'debug': logging.DEBUG, 'info': logging.INFO,
@@ -27,12 +30,17 @@ class InvalidTag(Exception):
     "Raised when tag parts less then 3"
     pass
 
+class NoConfig(Exception):
+    "Raised when no config in yaml file"
+    pass
+
 
 SHADOWSOCKS = 'shadowsocks'
 VMESS = 'vmess'
 SOCKS5 = 'socks5'
 HTTP = 'http'
 OUTBOUND = 'outbound'
+CONFIG = 'config'
 
 
 def convert(config, template, output):
@@ -78,12 +86,19 @@ def convert(config, template, output):
     env = Environment(loader=FileSystemLoader(searchpath="."))
     tmpl = env.get_template(template)
 
-    logfile = "/tmp/xray-{}".format(config)
+    if CONFIG not in inbounds:
+        raise NoConfig
+    
+    # logfile = "/tmp/xray-{}".format(config)
+    loglevel = inbounds[CONFIG]['loglevel']
+    logfile = inbounds[CONFIG]['logfile']
+
     renderedData = tmpl.render(
-        logfile=logfile, shadowsocks=inbounds[SHADOWSOCKS], vmess=inbounds[VMESS], http=inbounds[HTTP], socks5=inbounds[SOCKS5], outbound=inbounds[OUTBOUND])
+        logfile=logfile,loglevel=loglevel, shadowsocks=inbounds[SHADOWSOCKS], vmess=inbounds[VMESS], http=inbounds[HTTP], socks5=inbounds[SOCKS5], outbound=inbounds[OUTBOUND])
 
     with open(output, 'w') as outputfile:
         obj = json.loads(renderedData)
+        print("output to file: {}".format(output))
         json.dump(obj, outputfile,indent= 2)
 
 
@@ -92,6 +107,7 @@ def main():
     parser.add_argument('--log-level', help='log level,default level: warn',
                         choices=['debug', 'info', 'warn', 'error', 'fatal'])
     parser.add_argument('--log-file', help='log file')
+
     parser.add_argument('--config', help='config file(yaml)',
                         default='config.yaml')
     parser.add_argument('--template', help='template file',

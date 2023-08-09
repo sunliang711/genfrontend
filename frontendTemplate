@@ -1,9 +1,9 @@
 {{ define "all" }}
 {
     "log": {
-        "access": "/tmp/v2relay-frontend.log",
-        "error": "/tmp/v2relay-frontend.log",
-        "loglevel": "info"
+        "access": "{{.Config.Logfile}}",
+        "error": "{{.Config.Logfile}}",
+        "loglevel": "{{.Config.Loglevel}}"
     },
     "inbounds": [
         {{- range $idx,$ele :=.Shadowsocks}}
@@ -118,7 +118,7 @@
         },
         "streamSettings": {
             "sockopt": {
-                // for transparent proxy
+                "note":"for transparent proxy",
                 "mark": 255
             }
         }

@@ -107,9 +107,12 @@ fi
 # write your code below (just define function[s])
 # function is hidden when begin with '_'
 ###############################################################################
-linkMacAMD64="https://source711.oss-cn-shanghai.aliyuncs.com/genfrontend/v2/genfrontend-darwin-amd64.tar.bz2"
-linkLinuxAMD64="https://source711.oss-cn-shanghai.aliyuncs.com/genfrontend/v2/genfrontend-linux-amd64.tar.bz2"
-linkLinuxARM64="https://source711.oss-cn-shanghai.aliyuncs.com/genfrontend/v2/genfrontend-linux-arm64.tar.bz2"
+version="v3.0"
+
+linkMacAMD64="https://github.com/sunliang711/genfrontend/releases/download/${version}/genfrontend-darwin-amd64.tar.bz2"
+linkMacARM64="https://github.com/sunliang711/genfrontend/releases/download/${version}/genfrontend-darwin-arm64.tar.bz2"
+linkLinuxAMD64="https://github.com/sunliang711/genfrontend/releases/download/${version}/genfrontend-linux-amd64.tar.bz2"
+linkLinuxARM64="https://github.com/sunliang711/genfrontend/releases/download/${version}/genfrontend-linux-arm64.tar.bz2"
 install(){
     local dest=${1:?'missing install location'}
     if [ ! -d ${dest} ];then

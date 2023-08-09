@@ -4,6 +4,10 @@
 
 ## yaml2json.py
 > python version of genfrontend
+```
+pip3 install pyyaml
+pip3 install jinja2
+```
 
 ## github release
 ```

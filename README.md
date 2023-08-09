@@ -4,3 +4,11 @@
 
 ## yaml2json.py
 > python version of genfrontend
+
+## github release
+```
+1. build
+./build.sh pack
+2. upload to github release
+
+```

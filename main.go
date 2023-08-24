@@ -80,8 +80,9 @@ type Outbound struct {
 }
 
 type Config struct {
-	Loglevel string
-	Logfile  string
+	Loglevel  string
+	LogAccess string `mapstructure:"log_access"`
+	LogError  string `mapstructure:"log_error"`
 }
 
 type Inbounds struct {

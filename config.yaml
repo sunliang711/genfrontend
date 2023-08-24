@@ -12,7 +12,8 @@
 inbounds:
   config:
     loglevel: info
-    logfile: /tmp/xray711.log
+    log_access: /tmp/xray711.access
+    log_error: /tmp/xray711.error
 
   shadowsocks:
     - user: nicof

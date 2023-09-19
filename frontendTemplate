@@ -16,6 +16,7 @@
                 "method": "{{$ele.Cipher}}",
                 "password": "{{$ele.Password}}",
                 "udp": {{$ele.UDP}},
+                "network": "tcp,udp",
                 "level": 0,
                 "ota": false
             }

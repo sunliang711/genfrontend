@@ -13,6 +13,6 @@ pip3 install jinja2
 ```
 1. build
 ./build.sh pack
-2. upload to github release
+2. upload to github release(with a new tag, eg: vX.X)
 
 ```

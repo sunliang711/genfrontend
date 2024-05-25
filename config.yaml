@@ -12,8 +12,9 @@
 inbounds:
   config:
     loglevel: info
-    log_access: /tmp/xray711.access
-    log_error: /tmp/xray711.error
+    # 日志文件位置，空串时输出到stdout stderr
+    log_access: ""
+    log_error: ""
 
   shadowsocks:
     - user: nicof

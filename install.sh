@@ -107,7 +107,7 @@ fi
 # write your code below (just define function[s])
 # function is hidden when begin with '_'
 ###############################################################################
-version="v4.1"
+version="v4.2"
 
 linkMacAMD64="https://github.com/sunliang711/genfrontend/releases/download/${version}/genfrontend-darwin-amd64.tar.bz2"
 linkMacARM64="https://github.com/sunliang711/genfrontend/releases/download/${version}/genfrontend-darwin-arm64.tar.bz2"

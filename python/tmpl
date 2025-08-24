@@ -98,7 +98,7 @@
             }
         {%- endfor -%}
     ],
-    "outbound": {
+    "outbounds": [{
         {%- if (outbound.protocol=="socks" or outbound.protocol=="http") -%}
         "protocol": "{{outbound.protocol}}",
         "settings": {
@@ -153,6 +153,6 @@
         {{outbound.file}}
 
         {%- endif -%}
-    }
+    }]
 
 }

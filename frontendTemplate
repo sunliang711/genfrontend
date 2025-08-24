@@ -97,7 +97,7 @@
             }
         {{- end}}
     ],
-    "outbound": {
+    "outbounds": [{
         {{- if or (eq .Outbound.Protocol "socks") (eq .Outbound.Protocol "http") }}
 
         "protocol": "{{.Outbound.Protocol}}",
@@ -153,6 +153,6 @@
         {{.Outbound.File}}
 
         {{- end}}
-    }
+    }]
 }
 {{ end }}

@@ -381,17 +381,43 @@ install(){
     dest=$(cd ${dest} && pwd)
     echo "${GREEN}Install location: ${dest}${NORMAL}"
 
-    case $(uname -m) in
-        x86_64)
-            machine=amd64
-            ;;
-        aarch64)
-            machine=arm64
-            ;;
-        *)
-            log Fatal "Unsupported machine: $(uname -m)"
-            ;;
+    # case $(uname -m) in
+    #     x86_64)
+    #         machine=amd64
+    #         ;;
+    #     aarch64)
+    #         machine=arm64
+    #         ;;
+    #     *)
+    #         log Fatal "Unsupported machine: $(uname -m)"
+    #         ;;
+    # esac
+      osRE=
+    machineRE=
+    case $(uname -s) in
+      Linux)
+        osRE='linux'
+        ;;
+      Darwin)
+        osRE='darwin|mac'
+        ;;
+      *)
+        log FATAL "unsupported os: $(uname -s)"
+        ;;
     esac
+    log INFO "osRE: ${osRE}"
+    case $(uname -m) in
+      x86_64)
+        machineRE='amd64|x86_64'
+        ;;
+      i686)
+        machineRE='386|i686'
+        ;;
+      arm64)
+        machineRE='arm64|aarch64'
+        ;;
+    esac
+    log INFO "machineRE: ${machineRE}"
 
     version="${2}"
     # 如果version不是以v开头，则添加v
@@ -402,13 +428,14 @@ install(){
     if [ "${version}" == "v" ];then
         # get latest version from github
         log INFO "Get latest version from github"
-        link="$(curl -s https://api.github.com/repos/sunliang711/genfrontend/releases/latest|grep browser_download_url|grep -i $(uname -s) | grep ${machine} | cut -d '"' -f 4)"
+        link="$(curl -s https://api.github.com/repos/sunliang711/genfrontend/releases/latest|grep browser_download_url|grep -iE "${osRE}" | grep -iE "${machineRE}" | cut -d '"' -f 4)"
     else
         # get version from github
         log INFO "Get version ${version} from github"
-        link="$(curl -s https://api.github.com/repos/sunliang711/genfrontend/releases/tags/${version}|grep browser_download_url|grep -i $(uname -s) | grep ${machine} | cut -d '"' -f 4)"
+        link="$(curl -s https://api.github.com/repos/sunliang711/genfrontend/releases/tags/${version}|grep browser_download_url|grep -iE "${osRE}" | grep -iE "${machineRE}" | cut -d '"' -f 4)"
     fi
 
+return
     # get download link
     if [ -z "${link}" ];then
         log Fatal "Cannot get download link,your OS not support!"

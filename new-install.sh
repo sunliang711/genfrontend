@@ -401,9 +401,11 @@ install(){
 
     if [ -z "${version}" ];then
         # get latest version from github
+        log INFO "Get latest version from github"
         link="$(curl -s https://api.github.com/repos/sunliang711/genfrontend/releases/latest|grep browser_download_url|grep -i $(uname -s) | grep ${machine} | cut -d '"' -f 4)"
     else
         # get version from github
+        log INFO "Get version ${version} from github"
         link="$(curl -s https://api.github.com/repos/sunliang711/genfrontend/releases/tags/${version}|grep browser_download_url|grep -i $(uname -s) | grep ${machine} | cut -d '"' -f 4)"
     fi
 

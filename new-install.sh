@@ -373,6 +373,14 @@ install(){
     # get download link
     _require_linux
 
+    local dest=${1:?'missing install location'}
+    if [ ! -d ${dest} ];then
+        echo "Create ${dest}..."
+        mkdir -p "${dest}"
+    fi
+    dest=$(cd ${dest} && pwd)
+    echo "${GREEN}Install location: ${dest}${NORMAL}"
+
     case $(uname -m) in
         x86_64)
             machine=amd64
@@ -385,7 +393,7 @@ install(){
             ;;
     esac
 
-    version="${version}"
+    version="${2}"
     # 如果version不是以v开头，则添加v
     if [[ ! "${version}" =~ ^v.* ]]; then
         version="v${version}"
@@ -416,7 +424,7 @@ install(){
         (cd $downloadDir && curl -LO ${link}) && { echo "Download successfully"; } || { echo "Download failed!"; exit 1; }
     fi
 
-    (cd ${downloadDir} && _run "tar -C $dest -xvf ${tarFile}" && echo "${GREEN}Install successfully${NORMAL}" || { echo "${RED}Install failed!${NORMAL}"; exit 1; })
+    (cd ${downloadDir} && tar -C $dest -xvf ${tarFile} && echo "${GREEN}Install successfully${NORMAL}" || { echo "${RED}Install failed!${NORMAL}"; exit 1; })
     # rename
     (cd $dest && mv ${dirName} genfrontend)
 }

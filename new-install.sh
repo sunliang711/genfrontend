@@ -399,7 +399,7 @@ install(){
         version="v${version}"
     fi
 
-    if [ -z "${version}" ];then
+    if [ "${version}" == "v" ];then
         # get latest version from github
         log INFO "Get latest version from github"
         link="$(curl -s https://api.github.com/repos/sunliang711/genfrontend/releases/latest|grep browser_download_url|grep -i $(uname -s) | grep ${machine} | cut -d '"' -f 4)"

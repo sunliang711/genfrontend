@@ -419,6 +419,7 @@ install(){
     local dirName=${tarFile%.tar.bz2}
 
     local downloadDir=/tmp/genfrontend
+    _ensureDir ${downloadDir}
     if [ -e ${downloadDir}/${tarFile} ];then
         echo "${YELLOW}Use cache file ${downloadDir}/${tarFile}${NORMAL}"
     else

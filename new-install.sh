@@ -435,7 +435,6 @@ install(){
         link="$(curl -s https://api.github.com/repos/sunliang711/genfrontend/releases/tags/${version}|grep browser_download_url|grep -iE "${osRE}" | grep -iE "${machineRE}" | cut -d '"' -f 4)"
     fi
 
-return
     # get download link
     if [ -z "${link}" ];then
         log Fatal "Cannot get download link,your OS not support!"

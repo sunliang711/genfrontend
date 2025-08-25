@@ -407,13 +407,13 @@ install(){
     esac
     log INFO "osRE: ${osRE}"
     case $(uname -m) in
-      x86_64)
+      x86_64 | amd64)
         machineRE='amd64|x86_64'
         ;;
-      i686)
+      i686 | 386)
         machineRE='386|i686'
         ;;
-      arm64)
+      arm64 | aarch64)
         machineRE='arm64|aarch64'
         ;;
     esac

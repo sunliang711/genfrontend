@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 	"text/template"
 
@@ -117,25 +117,27 @@ func main() {
 		logrus.SetLevel(logrus.InfoLevel)
 	}
 
+	// 设置配置文件路径
 	viper.SetConfigFile(*configFile)
+	// 1. 读取配置文件
 	err = viper.ReadInConfig()
 	if err != nil {
 		logrus.Fatalf("Read config file error: %v", err)
 	}
 
-	tmpl, err := template.ParseFiles(*templateFile)
-	if err != nil {
-		logrus.Fatalf("Parse template file error: %v", err)
-	}
 	var inbounds Inbounds
+	// 2. 解析配置文件到结构体中
+	// 现在viper中已经读取了配置文件
+	// 使用UnmarshalKey将配置文件中的inbounds部分解析到inbounds结构体中
 	err = viper.UnmarshalKey("inbounds", &inbounds)
 	if err != nil {
 		logrus.Fatalf("Decode inbounds error: %v", err)
 	}
-	// port信息放在tag中（net traffic会使用tag中的port来监控流量），config文件中没有单独的port信息
-	// 因此需要把tag中的port信息提取出来，放到结构体的Port字段内
 
-	// 把tag中的端口号解析出来放到port字段
+	// 3. 把tag中的端口号解析出来放到port字段
+	// 配置文件中没有单独的port信息，port信息在tag中
+	// (net traffic会使用tag中的port来监控流量），config文件中没有单独的port信息
+	// 因此需要把tag中的port信息提取出来，放到结构体的Port字段内
 	for i := range inbounds.Http {
 		fields := strings.Split(inbounds.Http[i].Tag, ":")
 		if len(fields) < 3 {
@@ -167,7 +169,7 @@ func main() {
 	logrus.Debugf("inbounds: %+v", inbounds)
 
 	if inbounds.Outbound.Protocol == "file" {
-		bs, err := ioutil.ReadFile(inbounds.Outbound.File)
+		bs, err := os.ReadFile(inbounds.Outbound.File)
 		if err != nil {
 			logrus.Fatalf("read file: %v error", inbounds.Outbound.File)
 		}
@@ -175,10 +177,16 @@ func main() {
 	}
 
 	var b bytes.Buffer
+	// 4. 解析模板文件
+	tmpl, err := template.ParseFiles(*templateFile)
+	if err != nil {
+		logrus.Fatalf("Parse template file error: %v", err)
+	}
+	// 5. 渲染模板文件
 	tmpl.ExecuteTemplate(&b, "all", &inbounds)
 	if len(*outputFile) > 0 {
 		logrus.Infof("Write to file: %v", *outputFile)
-		err = ioutil.WriteFile(*outputFile, b.Bytes(), 0644)
+		err = os.WriteFile(*outputFile, b.Bytes(), 0644)
 		if err != nil {
 			logrus.Fatalf("Write output file error: %v", err)
 		}

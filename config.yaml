@@ -15,6 +15,9 @@ inbounds:
     # 日志文件位置，空串时输出到stdout stderr
     log_access: ""
     log_error: ""
+    vmess_port: 4110
+    vmess_network: raw
+    api_port: 18080
 
   shadowsocks:
     - user: nicof
@@ -32,8 +35,7 @@ inbounds:
       server: 10.1.2.245
       cipher: auto
       uuid: e2791dbb-f350-4a71-998a-da3b184a1cef
-      alterId: 64
-      network: ws
+      alterId: 0
       sub: true
 
   socks5:

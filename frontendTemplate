@@ -22,24 +22,26 @@
             }
         }
         {{- end}}
-        {{- range $idx,$ele :=.Vmess }}
-            ,{
-                "tag": "{{$ele.Tag}}",
-                "port": {{$ele.Port}},
-                "protocol": "vmess",
-                "settings": {
-                    "clients": [
-                        {
-                            "id": "{{$ele.UUID}}",
-                            "alterId": {{$ele.AlterID}}
-                        }
-                    ]
-                },
-                "streamSettings": {
-                    "network": "{{$ele.Network}}"
-                }
+        {
+            "tag": "vmess",
+            "port": {{.Config.VmessPort}},
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                {{- range $idx,$ele :=.Vmess }}
+                    {{- if $idx}}, {{- end}}
+                    {
+                        "email":"{{$ele.Tag}}",
+                        "id": "{{$ele.UUID}}",
+                        "alterId": {{$ele.AlterID}}
+                    }
+                {{- end}}
+                ]
+            },
+            "streamSettings": {
+                "network": "{{.Config.VmessNetwork}}"
             }
-        {{- end}}
+        }
         {{- range $idx,$ele :=.Http}}
             ,{
                 "tag": "{{$ele.Tag}}",
@@ -153,6 +155,28 @@
         {{.Outbound.File}}
 
         {{- end}}
-    }]
+    }],
+    "api": {
+        "tag": "api",
+        "listen": "127.0.0.1:{{.Config.ApiPort}}",
+        "services": [
+            "StatsService"
+        ]
+    },
+    "stats": {},
+    "policy": {
+        "levels": {
+            "0": {
+                "statsUserUplink": true,
+                "statsUserDownlink": true
+            }
+        },
+        "system": {
+            "statsInboundUplink": true,
+            "statsInboundDownlink": true,
+            "statsOutboundUplink": true,
+            "statsOutboundDownlink": true
+        }
+    }
 }
 {{ end }}

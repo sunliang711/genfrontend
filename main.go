@@ -31,8 +31,8 @@ type Vmess struct {
 	Cipher  string
 	UUID    string
 	AlterID string
-	Network string
 	Sub     bool
+	// Network string
 }
 
 type Socks5 struct {
@@ -80,9 +80,12 @@ type Outbound struct {
 }
 
 type Config struct {
-	Loglevel  string
-	LogAccess string `mapstructure:"log_access"`
-	LogError  string `mapstructure:"log_error"`
+	Loglevel     string
+	LogAccess    string `mapstructure:"log_access"`
+	LogError     string `mapstructure:"log_error"`
+	VmessPort    int    `mapstructure:"vmess_port"`    // vmess只需要一个端口，多用户使用的是clients数组
+	VmessNetwork string `mapstructure:"vmess_network"` // vmess的network字段，可选值: "raw" | "xhttp" | "kcp" | "grpc" | "ws" | "httpupgrade"
+	ApiPort      int    `mapstructure:"api_port"`      // api端口
 }
 
 type Inbounds struct {

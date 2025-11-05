@@ -6,8 +6,9 @@
         "loglevel": "{{.Config.Loglevel}}"
     },
     "inbounds": [
+        {{- $first := true }}
         {{- range $idx,$ele :=.Shadowsocks}}
-        {{- if $idx}}, {{- end}}
+        {{- if not $first}}, {{- end}}
         {
             "tag":"{{$ele.Tag}}",
             "protocol": "shadowsocks",
@@ -21,7 +22,9 @@
                 "ota": false
             }
         }
+        {{- $first = false }}
         {{- end}}
+        {{- if not $first}}, {{- end}}
         {
             "tag": "vmess",
             "port": {{.Config.VmessPort}},
@@ -42,8 +45,10 @@
                 "network": "{{.Config.VmessNetwork}}"
             }
         }
+        {{- $first = false }}
         {{- range $idx,$ele :=.Http}}
-            ,{
+            {{- if not $first}}, {{- end}}
+            {
                 "tag": "{{$ele.Tag}}",
                 "protocol": "http",
                 "port": {{$ele.Port}},
@@ -68,10 +73,11 @@
                     ]
                 }
             }
+            {{- $first = false }}
         {{- end}}
-   
         {{- range $idx,$ele :=.Socks5}}
-            ,{
+            {{- if not $first}}, {{- end}}
+            {
                 "tag":"{{$ele.Tag}}",
                 "protocol": "socks",
                 "port": {{$ele.Port}},
@@ -97,6 +103,7 @@
                     ]
                 }
             }
+            {{- $first = false }}
         {{- end}}
     ],
     "outbounds": [{

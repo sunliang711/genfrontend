@@ -99,7 +99,7 @@ func main() {
 	var err error
 	configFile := pflag.StringP("config", "c", "config.yaml", "config file")
 	templateFile := pflag.StringP("template", "t", "frontendTemplate", "template file")
-	outputFile := pflag.StringP("output", "o", "", "output config file")
+	outputFile := pflag.StringP("output", "o", "", "output config file, if not set, print to stdout")
 	level := pflag.StringP("level", "l", "info", "log level")
 
 	pflag.Parse()
@@ -183,14 +183,21 @@ func main() {
 		logrus.Fatalf("Parse template file error: %v", err)
 	}
 	// 5. 渲染模板文件
-	tmpl.ExecuteTemplate(&b, "all", &inbounds)
+	err = tmpl.ExecuteTemplate(&b, "all", &inbounds)
+	if err != nil {
+		logrus.Fatalf("Execute template file error: %v", err)
+	}
+
+	// 6. 输出结果
 	if len(*outputFile) > 0 {
+		// 如果指定了输出文件，则将结果写入文件
 		logrus.Infof("Write to file: %v", *outputFile)
 		err = os.WriteFile(*outputFile, b.Bytes(), 0644)
 		if err != nil {
 			logrus.Fatalf("Write output file error: %v", err)
 		}
 	} else {
+		// 如果未指定输出文件，则将结果打印到stdout
 		fmt.Print(b.String())
 	}
 }
